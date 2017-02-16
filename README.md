@@ -12,10 +12,10 @@
 
 Package                           | Description
 ----------------------------------|-----------------
-com.meigooo.ticket.domain     | 领域对象包
-com.meigooo.ticket.repository | 数据存储服务包
-com.meigooo.ticket.service    | 业务逻辑服务包
-com.meigooo.ticket.web        | http接口服务包
+com.peach.ticket.domain     | 领域对象包
+com.peach.ticket.repository | 数据存储服务包
+com.peach.ticket.service    | 业务逻辑服务包
+com.peach.ticket.web        | http接口服务包
 
 ## 依赖组件
 
