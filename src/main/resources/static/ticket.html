@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>售票 车票管理系统</title>
+    <link href="./assets/stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="./assets/stylesheets/style.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="./dashboard.html">车票管理系统</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav" id="peach-menus">
+                <li class="active"><a href="./order.html">订单</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="javascript:;" id="username"></a>
+                </li>
+                <li>
+                    <a href="javascript:;" id="logout" style="display: none;">退出</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container peach-content">
+    <h3 class="peach-title">订单管理</h3>
+    <form class="form-inline peach-search clearfix" role="form">
+        <div class="form-group">
+            <label class="sr-only" for="name">订单ID</label>
+            <input class="form-control" name="name" id="name" placeholder="请输入订单ID">
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">搜索</button>
+    </form>
+    <div class="table-responsive peach-list">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>用户</th>
+                <th>起始站台</th>
+                <th>结束站台</th>
+                <th>总金额</th>
+                <th>支付金额</th>
+                <th>支付状态</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="peach-list">
+            <tr><td colspan="9">数据加载中……</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="peach-footer clearfix">
+        <div class="container peach-footer-content">
+            <div class="peach-buttons pull-left">
+                <!--<button class="btn btn-primary" id="btn-add">新增</button>-->
+            </div>
+            <nav class="peach-pagination pull-right" id="peach-page"></nav>
+        </div>
+    </div>
+</div>
+
+<!--加载中-->
+<div class="loader">
+    <div class="loader-inner line-scale">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<!--//加载中-->
+
+<!--模版开始-->
+<script type="text/html" id="peach-list-tpl">
+    <!--[for(var i in list){]-->
+    <tr>
+        <td><!--[= list[i].id]--></td>
+        <td><!--[= list[i].userId]--></td>
+        <td><!--[= list[i].startStationId]--></td>
+        <td><!--[= list[i].endStationId]--></td>
+        <td><!--[= list[i].totalAmount]--></td>
+        <td><!--[= list[i].payAmount]--></td>
+        <td><!--[= list[i].payStatus ? '已支付' : '未支付']--></td>
+        <td><!--[= $getOrderStatus(list[i].status)]--></td>
+        <td><!--[= $formatDate(list[i].createAt, 'yyyy-MM-dd hh:mm:ss')]--></td>
+        <td>
+            <a href="javascript:;" class="btn-edit" data-idx="<!--[= i]-->">查看</a>
+            <!--[if(list[i].status == 0){]-->
+            <a href="javascript:;" class="btn-change" data-idx="<!--[= i]-->">结算</a>
+            <!--[}]-->
+            <!--[if(list[i].status == 1){]-->
+            <a href="javascript:;" class="btn-change" data-idx="<!--[= i]-->">作废</a>
+            <!--[}]-->
+        </td>
+    </tr>
+    <!--[}]-->
+    <!--[if(list.length == 0){]-->
+    <tr><td colspan="9">没有数据。</td></tr>
+    <!--[}]-->
+</script>
+<script type="text/html" id="peach-page-tpl">
+    <!--[if(totalPages>1){]-->
+    <ul class="pagination">
+        <li class="<!--[if(number==1){]-->disabled<!--[}]-->">
+            <a class="<!--[if(number==1){]-->disabled<!--[}]-->" href="#" data-value="<!--[if(number!=1){]--><!--[=(number-1)]--><!--[}]-->">&laquo;</a>
+        </li>
+        <!--[for(var i in pagerInfor){]-->
+        <li class="<!--[if(pagerInfor[i]==number){]-->active<!--[}]-->">
+            <a href="#" data-value="<!--[=pagerInfor[i]]-->">
+                <!--[=pagerInfor[i]]-->
+            </a>
+        </li>
+        <!--[}]-->
+        <li class="<!--[if(number==totalPages){]-->disabled<!--[}]-->">
+            <a class="<!--[if(number==totalPages){]-->disabled<!--[}]-->" href="#" data-value="<!--[if(number!=totalPages){]--><!--[=(number+1)]--><!--[}]-->">&raquo;</a>
+        </li>
+    </ul>
+    <!--[}]-->
+</script>
+<!--//模版结束-->
+
+<!--编辑弹框开始-->
+<div class="modal fade" id="editForm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">订单信息</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">序号</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="oid"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">用户</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="userId"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">起始站台</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="startStationId"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">结束站台</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="endStationId"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">方案</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="fangan"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">总金额</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="totalAmount"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">支付金额</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="payAmount"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">支付状态</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="payStatus"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">订单状态</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="status"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">下单时间</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static" id="createAt"></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--//编辑弹框结束-->
+
+<script src="./assets/javascripts/template.js"></script>
+<script src="./assets/javascripts/jquery.1.11.js"></script>
+<script src="./assets/javascripts/bootstrap.js"></script>
+<script src="./assets/javascripts/content/common.js"></script>
+<script src="./assets/javascripts/content/ticket.js"></script>
+</body>
+
+</html>

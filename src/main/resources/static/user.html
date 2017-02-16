@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>用户 车票管理系统</title>
+    <link href="./assets/stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="./assets/stylesheets/style.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="./dashboard.html">车票管理系统</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav" id="peach-menus">
+                <li><a href="./role.html">角色</a></li>
+                <li class="active"><a href="./user.html">用户</a></li>
+                <li><a href="./station.html">站台</a></li>
+                <li><a href="./line.html">线路</a></li>
+                <li><a href="./order.html">订单</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="javascript:;" id="username"></a>
+                </li>
+                <li>
+                    <a href="javascript:;" id="logout" style="display: none;">退出</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container peach-content">
+    <h3 class="peach-title">用户管理</h3>
+    <form class="form-inline peach-search clearfix" role="form">
+        <div class="form-group">
+            <label class="sr-only" for="name">用户昵称</label>
+            <input class="form-control" name="name" id="name" placeholder="请输入用户昵称">
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">搜索</button>
+    </form>
+    <div class="table-responsive peach-list">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>登录名</th>
+                <th>昵称</th>
+                <th>手机号</th>
+                <th>状态</th>
+                <th>角色</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="peach-list">
+            <tr><td colspan="7">数据加载中……</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="peach-footer clearfix">
+        <div class="container peach-footer-content">
+            <div class="peach-buttons pull-left">
+                <button class="btn btn-primary" id="btn-add">新增</button>
+            </div>
+            <nav class="peach-pagination pull-right" id="peach-page"></nav>
+        </div>
+    </div>
+</div>
+
+<!--加载中-->
+<div class="loader">
+    <div class="loader-inner line-scale">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<!--//加载中-->
+
+<!--模版开始-->
+<script type="text/html" id="peach-list-tpl">
+    <!--[for(var i in list){]-->
+    <tr>
+        <td><!--[= list[i].id]--></td>
+        <td><!--[= list[i].userName]--></td>
+        <td><!--[= list[i].nickname]--></td>
+        <td><!--[= list[i].phone]--></td>
+        <td><!--[= list[i].status ? '启用' : '禁用']--></td>
+        <td><!--[= list[i].role.name]--></td>
+        <td>
+            <a href="javascript:;" class="btn-enabled" data-idx="<!--[= i]-->"><!--[= list[i].status ? '禁用' : '启用']--></a>
+            <a href="javascript:;" class="btn-edit" data-idx="<!--[= i]-->">编辑</a>
+            <a href="javascript:;" class="btn-delete" role="button" data-toggle="popover" data-placement="top" data-html=true data-content="确认删除吗？<a href='javascript:;' class='ok' data-id='<!--[= list[i].id]-->'>确认</a>">删除</a>
+        </td>
+    </tr>
+    <!--[}]-->
+    <!--[if(list.length == 0){]-->
+    <tr><td colspan="7">没有数据。</td></tr>
+    <!--[}]-->
+</script>
+<script type="text/html" id="peach-page-tpl">
+    <!--[if(totalPages>1){]-->
+    <ul class="pagination">
+        <li class="<!--[if(number==1){]-->disabled<!--[}]-->">
+            <a class="<!--[if(number==1){]-->disabled<!--[}]-->" href="#" data-value="<!--[if(number!=1){]--><!--[=(number-1)]--><!--[}]-->">&laquo;</a>
+        </li>
+        <!--[for(var i in pagerInfor){]-->
+        <li class="<!--[if(pagerInfor[i]==number){]-->active<!--[}]-->">
+            <a href="#" data-value="<!--[=pagerInfor[i]]-->">
+                <!--[=pagerInfor[i]]-->
+            </a>
+        </li>
+        <!--[}]-->
+        <li class="<!--[if(number==totalPages){]-->disabled<!--[}]-->">
+            <a class="<!--[if(number==totalPages){]-->disabled<!--[}]-->" href="#" data-value="<!--[if(number!=totalPages){]--><!--[=(number+1)]--><!--[}]-->">&raquo;</a>
+        </li>
+    </ul>
+    <!--[}]-->
+</script>
+<!--//模版结束-->
+
+<!--编辑弹框开始-->
+<div class="modal fade" id="editForm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">编辑信息</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="username2">登录名</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="username" id="username2" placeholder="请输入登录名" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="password">密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="password2">确认密码</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" name="password2" id="password2" placeholder="请输入确认密码" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="nickname">昵称</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="nickname" id="nickname" placeholder="请输入昵称" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="phone">手机号</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="phone" id="phone" placeholder="请输入手机号" maxlength="11" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="roleid">角色</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="roleId" placeholder="请选择角色" id="roleId">
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="status">状态</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="status" placeholder="请选择状态" id="status">
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="0" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary btn-save">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--//编辑弹框结束-->
+
+<script src="./assets/javascripts/template.js"></script>
+<script src="./assets/javascripts/jquery.1.11.js"></script>
+<script src="./assets/javascripts/bootstrap.js"></script>
+<script src="./assets/javascripts/content/common.js"></script>
+<script src="./assets/javascripts/content/user.js"></script>
+</body>
+
+</html>
