@@ -95,5 +95,10 @@ public class StationController {
         return new ResponseVo(ResponseCode.OK, "操作成功");
     }
 
+    @RequestMapping(value = "/findByCode", method = RequestMethod.GET)
+    public ResponseVo findByCode(@RequestParam String code) {
+        List<Station> stations = this.stationService.findByCode(code);
 
+        return new ResponseVo(stations);
+    }
 }

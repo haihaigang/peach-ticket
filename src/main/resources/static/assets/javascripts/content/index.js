@@ -2,7 +2,7 @@
  * 搜索
  *
  * */
-(function() {
+(function () {
     var docDOM = $(document),
         tempData = null,
         focusInte,
@@ -29,35 +29,51 @@
                 fangan: d.fangan
             },
             type: 'POST'
-        },function(response){
+        }, function (response) {
             Message.success('购票成功，请去订单中查看');
         });
-    })
+    });
+
+    $('#startStationId,#endStationId').autocomplete({
+        source: function (query, process) {
+            var matchCount = this.options.items;//返回结果集最大数量
+            Ajax.custom({
+                url: Ajax.javaPath + "/station/findByCode",
+                data: {
+                    code: query
+                }
+            }, function (response) {
+                return process(response.body);
+            });
+        },
+        formatItem: function (item) {
+            return item.name + "(" + item.code + "，" + item.id + ")";
+        },
+        setValue: function (item) {
+            return {'data-value': item.name, 'real-value': item.id};
+        }
+    });
 
     /**
      * 搜索商品
      */
     function getList(page) {
-        var formData = $('.peach-search').serializeArray();
-        var obj = {};
-
-        for (var i in formData) {
-            obj[formData[i].name] = formData[i].value;
-        }
-        obj.page = page;
-        obj.size = Ajax.pageSize;
+        var obj = {
+            startStationId: $('#startStationId').attr('real-value'),
+            endStationId: $('#endStationId').attr('real-value'),
+        };
 
         Ajax.custom({
             url: Ajax.javaPath + '/line/findByStations',
             data: obj,
             showLoader: true
-        }, function(response) {
+        }, function (response) {
             tempData = response.body;
             Ajax.render("#peach-page", "peach-page-tpl", tempData);
             Ajax.render("#peach-list", "peach-list-tpl", tempData);
 
 
-        }, function(data) {
+        }, function (data) {
         })
     }
 

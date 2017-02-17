@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by hgwang on 2017/2/13.
  */
@@ -75,4 +77,7 @@ public class StationServiceImpl implements StationService {
         return this.stationRepository.findAll(pageable);
     }
 
+    public List<Station> findByCode(String code){
+        return this.stationRepository.findByCodeContaining(code);
+    }
 }

@@ -10,6 +10,6 @@
     </root>
 
     <!-- project default level -->
-    <logger name="com.meigooo" level="DEBUG"/>
+    <logger name="com.peach" level="DEBUG"/>
 
 </configuration>
