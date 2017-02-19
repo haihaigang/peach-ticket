@@ -51,7 +51,8 @@
         },
         setValue: function (item) {
             return {'data-value': item.name, 'real-value': item.id};
-        }
+        },
+        delay: 300
     });
 
     /**
@@ -62,6 +63,15 @@
             startStationId: $('#startStationId').attr('real-value'),
             endStationId: $('#endStationId').attr('real-value'),
         };
+
+        if(!obj.startStationId){
+            Message.warning('请选择起始站台');
+            return;
+        }
+        if(!obj.endStationId){
+            Message.warning('请选择结束站台');
+            return;
+        }
 
         Ajax.custom({
             url: Ajax.javaPath + '/line/findByStations',
