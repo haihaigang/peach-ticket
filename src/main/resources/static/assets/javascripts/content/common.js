@@ -59,11 +59,19 @@
     };
     message.prototype.showMessage = function () {
         var that = this;
+        $(".top-message").css({
+            top: -$('.top-message').height(),
+            'left': ($('body').width()-$('.top-message').width())/2
+        })
         that.startTimeOut = setTimeout(function () {
-            $(".top-message").addClass("active");
-        }, 500)
+            $(".top-message").css({
+                top: 0,
+            }).addClass("active");
+        }, 80)
         that.endTimeOut = setTimeout(function () {
-            $(".top-message").removeClass("active");
+            $(".top-message").css({
+                top: -$('.top-message').height()
+            }).removeClass("active");
         }, 5000)
 
 

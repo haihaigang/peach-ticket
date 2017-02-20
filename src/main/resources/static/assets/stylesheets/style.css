@@ -256,11 +256,8 @@ table a.check {
 
 .top-message {
     position: fixed;
-    width: 500px;
-    left: 50%;
-    margin-left: -250px;
-    top: -52px;
-    transition: .5s;
+    top: -5200px;
+    transition: .1s;
     z-index: 10000;
 }
 
@@ -271,7 +268,7 @@ table a.check {
 .top-message .alert {
     margin: 0;
     border-radius: 0 0 4px 4px;
-    padding: 5px 10px;
+    padding: 5px 20px;
 }
 
 .subCategory-part {
