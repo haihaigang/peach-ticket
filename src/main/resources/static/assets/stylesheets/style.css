@@ -394,8 +394,8 @@ fieldset[disabled] .btn-success:hover {
 .peach-login{
     position: fixed;
     top: 15%;
-    left: 50%;
-    margin-left: -229px;
+    left: 0;
+    right: 0;
 }
 
 .peach-login-logo{
@@ -409,7 +409,7 @@ fieldset[disabled] .btn-success:hover {
 }
 
 .peach-login form{
-    width: 458px;
+    max-width: 458px;
     padding: 34px 65px;
     margin: 0 auto;
     border-radius: 4px;
