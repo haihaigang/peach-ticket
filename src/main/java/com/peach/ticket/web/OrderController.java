@@ -104,7 +104,8 @@ public class OrderController {
             HttpServletRequest request,
             @RequestParam Long startStationId,
             @RequestParam Long endStationId,
-            @RequestParam String fangan
+            @RequestParam String fangan,
+            @RequestParam String fanganCN
     ) {
         User user =(User)request.getSession().getAttribute("User");
 
@@ -112,6 +113,7 @@ public class OrderController {
         order.setStartStationId(startStationId);
         order.setEndStationId(endStationId);
         order.setFangan(fangan);
+        order.setFanganCN(fanganCN);
         order.setUserId(user.getId());
 
         this.orderService.create(order);

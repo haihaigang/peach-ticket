@@ -59,7 +59,7 @@
                 <th>起始站台</th>
                 <th>结束站台</th>
                 <th>总金额</th>
-                <th>支付金额</th>
+                <th>方案</th>
                 <th>支付状态</th>
                 <th>状态</th>
                 <th>创建时间</th>
@@ -102,7 +102,7 @@
         <td><!--[= list[i].startStationId]--></td>
         <td><!--[= list[i].endStationId]--></td>
         <td><!--[= list[i].totalAmount]--></td>
-        <td><!--[= list[i].payAmount]--></td>
+        <td><!--[= list[i].fanganCN]--></td>
         <td><!--[= list[i].payStatus ? '已支付' : '未支付']--></td>
         <td><!--[= $getOrderStatus(list[i].status)]--></td>
         <td><!--[= $formatDate(list[i].createAt, 'yyyy-MM-dd hh:mm:ss')]--></td>

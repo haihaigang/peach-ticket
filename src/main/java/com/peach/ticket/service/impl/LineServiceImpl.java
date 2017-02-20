@@ -78,7 +78,7 @@ public class LineServiceImpl implements LineService {
         return this.lineRepository.findAll(pageable);
     }
 
-    public HashMap<String, Integer> findByStations(Long startStationId, Long endStationId) {
+    public HashMap<String, String> findByStations(Long startStationId, Long endStationId) {
         if (startStationId == endStationId) {
             return null;
         }
@@ -117,18 +117,18 @@ public class LineServiceImpl implements LineService {
             }
         }
 
-        HashMap<String, Integer> results = new HashMap<>();
+        HashMap<String, String> results = new HashMap<>();
         Long startId = startStationId;
-        List<Long> tempArr = new ArrayList<>();
+        List<Station> tempArr = new ArrayList<>();
 
         while (true) {
-            tempArr.add(startId);
-
             Station currentStation = trees.get(startId);
 
             if (currentStation == null) {
                 break;
             }
+
+            tempArr.add(currentStation);
 
             if(currentStation.hasAllLines()){
                 break;
@@ -138,13 +138,16 @@ public class LineServiceImpl implements LineService {
             // 否则判断当前节点的子节点是否存在，不存在则记录到查找结果中并查找下一个，存在则查找子节点的第一个
             if (startId == endStationId || currentStation.getNextStations().isEmpty()) {
                 String tempKey = new String();
-                int count = 0;
+                String tempName = new String();
                 for (int i = 0; i < tempArr.size(); i++) {
-                    tempKey += tempArr.get(i).toString() + "-";
-                    count++;
+                    tempKey += tempArr.get(i).getId() + "-";
+                    tempName += tempArr.get(i).getName() + "-";
                 }
+                //分别移除最后的分隔符
+                tempKey = tempKey.substring(0, tempKey.length() - 1);
+                tempName = tempName.substring(0, tempName.length() - 1);
 
-                results.put(tempKey, tempArr.size());
+                results.put(tempKey, tempName);
                 startId = startStationId;
                 tempArr = new ArrayList<>();
 
@@ -158,6 +161,7 @@ public class LineServiceImpl implements LineService {
             } else {
                 if(currentStation.hasAllLines()){
                     startId = startStationId;
+                    tempArr = new ArrayList<>();
 
                     //清除除了开始节点的所有计数
                     for (int i = 0; i < trees.keySet().size(); i++) {
@@ -170,6 +174,9 @@ public class LineServiceImpl implements LineService {
                     Set<Long> keys2 = currentStation.getNextStations().keySet();
                     for (int i = 0; i < keys2.size(); i++) {
                         Long temp = (Long)keys2.toArray()[i];
+                        Station tempStation = currentStation.getNextStations().get(temp);
+
+                        // 处理key总是数字小的在前
                         String key = new String ();
                         if(startId < temp){
                             key = startId.toString() + "-" + temp.toString();
@@ -181,7 +188,7 @@ public class LineServiceImpl implements LineService {
                             continue;
                         }
 
-                        if(tempArr.contains(temp)){
+                        if(tempArr.contains(tempStation)){
                             currentStation.addLines(key);
                         }else{
                             currentStation.addLines(key);

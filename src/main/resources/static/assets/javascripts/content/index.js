@@ -26,7 +26,8 @@
             data: {
                 startStationId: d.startStationId,
                 endStationId: d.endStationId,
-                fangan: d.fangan
+                fangan: d.fangan,
+                fanganCN: d.fanganCN
             },
             type: 'POST'
         }, function (response) {

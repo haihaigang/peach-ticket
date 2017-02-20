@@ -23,6 +23,6 @@ public interface LineService {
     public Page<Line> findAll();
 
     //5. /api/line/findByStations 根据站台查询线路
-    public HashMap<String, Integer> findByStations(Long startStationId, Long endStationId);
+    public HashMap<String, String> findByStations(Long startStationId, Long endStationId);
 
 }

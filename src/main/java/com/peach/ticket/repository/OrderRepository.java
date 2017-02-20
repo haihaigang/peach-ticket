@@ -16,7 +16,7 @@ public interface OrderRepository extends Repository<Order, Long> {
 
     Order findById(Long id);
 
-    Page<Order> findAll(Pageable pageable);
+    Page<Order> findAllOrderByCreateAtDesc(Pageable pageable);
 
-    Page<Order> findByUserId(long userId, Pageable pageable);
+    Page<Order> findByUserIdOrderByCreateAtDesc(long userId, Pageable pageable);
 }

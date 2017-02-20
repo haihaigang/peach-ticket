@@ -8,6 +8,7 @@ public class TicketDTO {
     private long endStationId;
     private double price;
     private String fangan;
+    private String fanganCN;
     private int count;
 
 
@@ -49,5 +50,16 @@ public class TicketDTO {
 
     public void setFangan(String fangan) {
         this.fangan = fangan;
+        if(!fangan.isEmpty()){
+            this.count = fangan.split("-").length;
+        }
+    }
+
+    public String getFanganCN() {
+        return fanganCN;
+    }
+
+    public void setFanganCN(String fanganCN) {
+        this.fanganCN = fanganCN;
     }
 }

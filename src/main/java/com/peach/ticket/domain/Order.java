@@ -16,6 +16,7 @@ public class Order {
     private long startStationId;
     private long endStationId;
     private String fangan;
+    private String fanganCN;
     private double totalAmount;
     private double totalDiscount;
     private double payAmount;
@@ -143,10 +144,9 @@ public class Order {
         String[] fangs = this.fangan.split("-");
         int size = fangs.length;
 
-        if(size < 3){
+        if(size < 2){
             return 0;
         }
-        size--;//去除最后一个横线
 
         if(size < 5){
             return 3;
@@ -161,5 +161,13 @@ public class Order {
         }
 
         return 8;
+    }
+
+    public String getFanganCN() {
+        return fanganCN;
+    }
+
+    public void setFanganCN(String fanganCN) {
+        this.fanganCN = fanganCN;
     }
 }

@@ -42,7 +42,6 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository.delete(id);
     }
 
-
     public Order findOne(long id) {
         return this.orderRepository.findById(id);
     }
@@ -90,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
             }
         };
 
-        return this.orderRepository.findAll(pageable);
+        return this.orderRepository.findAllOrderByCreateAtDesc(pageable);
     }
 
     public void create(Order entity) {
@@ -205,6 +204,6 @@ public class OrderServiceImpl implements OrderService {
                 return false;
             }
         };
-        return this.orderRepository.findByUserId(id, pageable);
+        return this.orderRepository.findByUserIdOrderByCreateAtDesc(id, pageable);
     }
 }

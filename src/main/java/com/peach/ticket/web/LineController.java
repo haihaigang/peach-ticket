@@ -159,7 +159,7 @@ public class LineController {
 
     @RequestMapping(value = "/findByStations", method = RequestMethod.GET)
     public ResponseVo findByStations(@RequestParam Long startStationId, @RequestParam Long endStationId) {
-        HashMap<String, Integer> results = this.lineService.findByStations(startStationId, endStationId);
+        HashMap<String, String> results = this.lineService.findByStations(startStationId, endStationId);
 
         if (results == null || results.size() == 0) {
             return new ResponseVo(ResponseCode.NOT_FOUND, "未找到线路信息");
@@ -169,7 +169,7 @@ public class LineController {
         //途经线路，途经站台，站台数，票价
         for (int i = 0; i < results.keySet().size(); i++) {
             String key = (String)results.keySet().toArray()[i];
-            int count = results.get(key);
+            String name = (String)results.get(key);
 
             //这里使用order来生成价格
             Order order = new Order();
@@ -179,7 +179,7 @@ public class LineController {
             ticketDTO.setStartStationId(startStationId);
             ticketDTO.setEndStationId(endStationId);
             ticketDTO.setFangan(key);
-            ticketDTO.setCount(count);
+            ticketDTO.setFanganCN(name);
             ticketDTO.setPrice(order.getTotalAmount());
 
             dtos.add(ticketDTO);
