@@ -89,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
             }
         };
 
-        return this.orderRepository.findAllOrderByCreateAtDesc(pageable);
+        return this.orderRepository.findAllByOrderByCreateAtDesc(pageable);
     }
 
     public void create(Order entity) {
