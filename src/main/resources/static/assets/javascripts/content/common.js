@@ -164,27 +164,7 @@
             type: options.type || 'GET',
             dataType: 'json',
             beforeSend: function (request) {
-                var user = Cookie.getCookie("User"),
-                    mockToken = Cookie.getCookie('MockAccessToken');
 
-                if (user) {
-                    try {
-                        user = JSON.parse(user);
-                    } catch (e) {
-                        user = {};
-                    }
-                } else {
-                    user = {};
-                    if (mockToken) {
-                        // 若模拟token存在则使用
-                        user.accessToken = mockToken;
-                    } else {
-                        that.redirectToLogin();
-                        return;
-                    }
-                }
-                request.setRequestHeader("X-Auth-Token", user.accessToken);
-                request.setRequestHeader("AccessToken", user.accessToken);
             },
             processData: options.contentType ? false : true,
             contentType: options.contentType ? options.contentType : "application/x-www-form-urlencoded",
