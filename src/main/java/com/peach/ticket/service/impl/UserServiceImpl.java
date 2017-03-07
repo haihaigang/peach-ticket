@@ -1,5 +1,6 @@
 package com.peach.ticket.service.impl;
 
+import com.peach.ticket.domain.Role;
 import com.peach.ticket.domain.User;
 import com.peach.ticket.repository.UserRepository;
 import com.peach.ticket.service.UserService;
@@ -77,5 +78,9 @@ public class UserServiceImpl implements UserService {
 
     public User findByUserName(String username) {
         return this.userRepository.findByUsername(username);
+    }
+
+    public int countByRole(Role role){
+        return this.userRepository.countByRole(role);
     }
 }

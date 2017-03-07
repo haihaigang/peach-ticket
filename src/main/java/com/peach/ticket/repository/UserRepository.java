@@ -1,5 +1,6 @@
 package com.peach.ticket.repository;
 
+import com.peach.ticket.domain.Role;
 import com.peach.ticket.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,4 +20,8 @@ public interface UserRepository  extends Repository<User, Long> {
     Page<User> findAll(Pageable pageable);
 
     User findByUsername(String username);
+
+    int countByRole(Role role);
+
+
 }

@@ -1,5 +1,6 @@
 package com.peach.ticket.service;
 
+import com.peach.ticket.domain.Role;
 import com.peach.ticket.domain.User;
 import org.springframework.data.domain.Page;
 
@@ -21,4 +22,7 @@ public interface UserService {
     public Page<User> findAll();
 
     public User findByUserName(String username);
+
+    public int countByRole(Role role);
+
 }

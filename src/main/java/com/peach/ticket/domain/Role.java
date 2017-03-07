@@ -19,6 +19,10 @@ public class Role {
     public Role() {
     }
 
+    public Role(int id) {
+        this.id = id;
+    }
+
     public Role(long id) {
         this.id = id;
     }

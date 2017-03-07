@@ -2,6 +2,7 @@ package com.peach.ticket.web;
 
 import com.peach.ticket.domain.Role;
 import com.peach.ticket.service.RoleService;
+import com.peach.ticket.service.UserService;
 import com.peach.ticket.web.response.ResponseCode;
 import com.peach.ticket.web.response.ResponseVo;
 import com.peach.ticket.web.dto.RoleDTO;
@@ -21,6 +22,9 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseVo save(
@@ -55,6 +59,13 @@ public class RoleController {
 
     @RequestMapping(value = "/{id}/remove", method = RequestMethod.POST)
     public ResponseVo remove(@PathVariable Long id) {
+        Role role = new Role(id);
+
+        int count = this.userService.countByRole(role);
+        if(count > 0){
+            return new ResponseVo(ResponseCode.LOGIC_ERROR, "还有关联的用户，需要先删除用户");
+        }
+
         this.roleService.remove(id);
 
         return new ResponseVo(ResponseCode.OK, "删除成功");
