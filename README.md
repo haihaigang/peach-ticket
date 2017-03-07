@@ -21,7 +21,7 @@ com.peach.ticket.web        | http接口服务包
 
 ### 数据存储服务
 
-数据存储使用hibernate，gradle引入spring-boot-starter-data-jpa包。调用代码参考com.meigooo.ticket.repository包中的示例
+数据存储使用hibernate，gradle引入spring-boot-starter-data-jpa包。调用代码参考com.peach.ticket.repository包中的示例
 
 ### 日志
 
