@@ -22,7 +22,7 @@ public class User {
 
     private int status;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.REFRESH)
     @JoinColumn(name = "role_id")
     private Role role;
 
