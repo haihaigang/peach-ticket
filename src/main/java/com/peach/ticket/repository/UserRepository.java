@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 
 /**
- * Created by hgwang on 2017/2/13.
+ * Created by jwliu on 2017/2/13.
  */
 public interface UserRepository  extends Repository<User, Long> {
 

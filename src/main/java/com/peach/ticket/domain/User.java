@@ -3,7 +3,7 @@ package com.peach.ticket.domain;
 import javax.persistence.*;
 
 /**
- * Created by hgwang on 2017/1/21.
+ * Created by jwliu on 2017/1/21.
  */
 @Entity
 @Table(name = "user")

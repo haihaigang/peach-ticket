@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 /**
- * Created by hgwang on 2017/2/16.
+ * Created by jwliu on 2017/2/16.
  */
 @Aspect
 @Component
