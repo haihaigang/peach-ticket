@@ -8,6 +8,13 @@
         curPopDom = null, //当前点击的popover弹窗dom
         tempId = null;//点击操作的信息ID
 
+    //提交form表单
+    $('.peach-search').submit(function (e) {
+        e.preventDefault();
+
+        getList(1);
+    });
+
     //点击新增打开编辑框
     $('#btn-add').click(function (e) {
         e.preventDefault();

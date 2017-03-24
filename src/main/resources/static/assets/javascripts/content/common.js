@@ -142,7 +142,7 @@
 /*ajax*/
 (function () {
     function ajax() {
-        this.pageSize = 100; //分页大小
+        this.pageSize = 10; //分页大小
         this.pageCount = 10; //显示分页数量
         this.loaderDom = $(".loader");
         this.setTokenDom = $("#set-token");
@@ -177,6 +177,7 @@
                                 response.body.pagerInfor = that.getAllPager(response.body.number, response.body.totalPages)
                             }
                         }
+                        console.log(response.body)
                         success(response)
                     }
                 } else if (response.status == 401) { //未登录状态

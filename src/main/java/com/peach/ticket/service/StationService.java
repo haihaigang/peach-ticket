@@ -20,7 +20,7 @@ public interface StationService {
     public Station findOne(long id);
 
     //4. /api/station/findAll 获取所有
-    public Page<Station> findAll();
+    public Page<Station> findAll(int page, int size, String code, String name);
 
     //4. /api/station/findAll 获取所有
     public List<Station> findByCode(String code);

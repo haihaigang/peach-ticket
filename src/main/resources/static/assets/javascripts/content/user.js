@@ -7,6 +7,13 @@
         tempData = null,
         curPopDom = null; //当前点击的popover弹窗dom
 
+    //提交form表单
+    $('.peach-search').submit(function (e) {
+        e.preventDefault();
+
+        getList(1);
+    });
+
     //点击新增打开编辑框
     $('#btn-add').click(function (e) {
         e.preventDefault();
@@ -160,7 +167,8 @@
         Ajax.custom({
             url: Ajax.javaPath + '/role/findAll',
             data: {
-                size: 100
+                page: 1,
+                size: 999
             },
             showLoader: true
         }, function (response) {

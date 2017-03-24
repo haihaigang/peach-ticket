@@ -46,21 +46,21 @@ public class OrderServiceImpl implements OrderService {
         return this.orderRepository.findById(id);
     }
 
-    public Page<Order> findAll() {
+    public Page<Order> findAll(int page, int size, long userId, int status) {
         Pageable pageable = new Pageable() {
             @Override
             public int getPageNumber() {
-                return 0;
+                return page;
             }
 
             @Override
             public int getPageSize() {
-                return 0;
+                return size;
             }
 
             @Override
             public int getOffset() {
-                return 0;
+                return (page - 1 ) * size;
             }
 
             @Override
@@ -89,7 +89,13 @@ public class OrderServiceImpl implements OrderService {
             }
         };
 
-        return this.orderRepository.findAllByOrderByCreateAtDesc(pageable);
+        if(userId != 0){
+            return this.orderRepository.findByUserIdOrderByCreateAtDesc(userId, pageable);
+        }else if(status != -1){
+            return this.orderRepository.findByStatusOrderByCreateAtDesc(status, pageable);
+        }else{
+            return this.orderRepository.findAllByOrderByCreateAtDesc(pageable);
+        }
     }
 
     public void create(Order entity) {
@@ -162,21 +168,21 @@ public class OrderServiceImpl implements OrderService {
         return true;
     }
 
-    public Page<Order> findByUser(long id) {
+    public Page<Order> findByUser(int page, int size, long userId, int status) {
         Pageable pageable = new Pageable() {
             @Override
             public int getPageNumber() {
-                return 0;
+                return page;
             }
 
             @Override
             public int getPageSize() {
-                return 0;
+                return size;
             }
 
             @Override
             public int getOffset() {
-                return 0;
+                return (page - 1) * size;
             }
 
             @Override
@@ -204,6 +210,11 @@ public class OrderServiceImpl implements OrderService {
                 return false;
             }
         };
-        return this.orderRepository.findByUserIdOrderByCreateAtDesc(id, pageable);
+
+        if(status != -1){
+            return this.orderRepository.findByUserIdAndStatusOrderByCreateAtDesc(userId, status, pageable);
+        }else{
+            return this.orderRepository.findByUserIdOrderByCreateAtDesc(userId, pageable);
+        }
     }
 }

@@ -82,9 +82,8 @@
             tempData = response.body;
             Ajax.render("#peach-page", "peach-page-tpl", tempData);
             Ajax.render("#peach-list", "peach-list-tpl", tempData);
-
-
         }, function (data) {
+            $('#peach-list').html('<tr><td colspan="7">' +data.message+ '</td></tr>')
         })
     }
 

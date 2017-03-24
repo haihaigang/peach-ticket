@@ -19,6 +19,8 @@ public interface UserRepository  extends Repository<User, Long> {
 
     Page<User> findAll(Pageable pageable);
 
+    Page<User> findByNicknameContaining(String nickname, Pageable pageable);
+
     User findByUsername(String username);
 
     int countByRole(Role role);

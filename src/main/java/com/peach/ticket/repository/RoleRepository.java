@@ -17,4 +17,6 @@ public interface RoleRepository extends Repository<Role, Long> {
     Role findById(Long id);
 
     Page<Role> findAll(Pageable pageable);
+
+    Page<Role> findByNameContaining(String name, Pageable pageable);
 }

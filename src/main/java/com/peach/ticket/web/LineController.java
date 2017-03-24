@@ -77,8 +77,13 @@ public class LineController {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public ResponseVo findAll() {
-        Page<Line> lines = this.lineService.findAll();
+    public ResponseVo findAll(
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false) int size,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) String name
+    ) {
+        Page<Line> lines = this.lineService.findAll(page, size, code, name);
 
         List<LineDTO> dtos = new ArrayList<LineDTO>();
         for (Line line : lines.getContent()
@@ -135,7 +140,7 @@ public class LineController {
 
     @RequestMapping(value = "/changeSort", method = RequestMethod.POST)
     public ResponseVo changeSort() {
-        Page<Line> lines = this.lineService.findAll();
+        Page<Line> lines = this.lineService.findAll(1, 9999, "","");
 
         List<LineDTO> dtos = new ArrayList<LineDTO>();
         for (Line line : lines.getContent()

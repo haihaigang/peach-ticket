@@ -10,19 +10,19 @@ import org.springframework.data.domain.Page;
 public interface UserService {
 
     //1. /api/user/save 保存更新
-    public void save(User entity);
+    void save(User entity);
 
     //2. /api/user/remove 删除
-    public void remove(long id);
+    void remove(long id);
 
     //3. /api/user/1 查询
-    public User findOne(long id);
+    User findOne(long id);
 
     //4. /api/user/findAll 获取所有
-    public Page<User> findAll();
+    Page<User> findAll(int page, int size, String nickname);
 
-    public User findByUserName(String username);
+    User findByUserName(String username);
 
-    public int countByRole(Role role);
+    int countByRole(Role role);
 
 }

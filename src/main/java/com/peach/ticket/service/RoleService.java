@@ -18,5 +18,5 @@ public interface RoleService {
     public Role findOne(long id);
 
     //4. /api/role/findAll 获取所有
-    public Page<Role> findAll();
+    public Page<Role> findAll(int page, int size, String name);
 }

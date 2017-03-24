@@ -84,8 +84,12 @@ public class RoleController {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public ResponseVo findAll() {
-        Page<Role> roles = this.roleService.findAll();
+    public ResponseVo findAll(
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false) int size,
+            @RequestParam(required = false, defaultValue = "") String name
+    ) {
+        Page<Role> roles = this.roleService.findAll(page, size, name);
 
         List<RoleDTO> dtos = new ArrayList<RoleDTO>();
         for (Role role : roles.getContent()

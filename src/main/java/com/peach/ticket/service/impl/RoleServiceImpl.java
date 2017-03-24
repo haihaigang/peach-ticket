@@ -30,21 +30,21 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.findById(id);
     }
 
-    public Page<Role> findAll(){
+    public Page<Role> findAll(int page, int size, String name){
         Pageable pageable = new Pageable() {
             @Override
             public int getPageNumber() {
-                return 0;
+                return page;
             }
 
             @Override
             public int getPageSize() {
-                return 0;
+                return size;
             }
 
             @Override
             public int getOffset() {
-                return 0;
+                return (page - 1) * size;
             }
 
             @Override
@@ -72,8 +72,11 @@ public class RoleServiceImpl implements RoleService {
                 return false;
             }
         };
-        return roleRepository.findAll(pageable);
+
+        if(!name.isEmpty()){
+            return roleRepository.findByNameContaining(name, pageable);
+        }else{
+            return roleRepository.findAll(pageable);
+        }
     }
-
-
 }

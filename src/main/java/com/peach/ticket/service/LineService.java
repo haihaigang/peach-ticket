@@ -20,9 +20,11 @@ public interface LineService {
     public Line findOne(long id);
 
     //4. /api/line/findAll 获取所有
-    public Page<Line> findAll();
+    public Page<Line> findAll(int page, int size, String code, String name);
 
     //5. /api/line/findByStations 根据站台查询线路
     public HashMap<String, String> findByStations(Long startStationId, Long endStationId);
+
+    public int countByStationId(int stationId);
 
 }

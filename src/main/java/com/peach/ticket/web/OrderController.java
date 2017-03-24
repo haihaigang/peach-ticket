@@ -38,8 +38,13 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public ResponseVo findAll() {
-        Page<Order> orders = this.orderService.findAll();
+    public ResponseVo findAll(
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false) int size,
+            @RequestParam(required = false, defaultValue = "0") long userId,
+            @RequestParam(required = false, defaultValue = "-1") int status
+    ) {
+        Page<Order> orders = this.orderService.findAll(page, size ,userId, status);
 
         return new ResponseVo(orders);
     }
@@ -122,10 +127,15 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/findByUser", method = RequestMethod.GET)
-    public ResponseVo findAllByUser(HttpServletRequest request) {
+    public ResponseVo findAllByUser(
+            HttpServletRequest request,
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false) int size,
+            @RequestParam(required = false, defaultValue = "-1") int status
+    ) {
         User user = (User)request.getSession().getAttribute("User");
 
-        Page<Order> orders = this.orderService.findByUser(user.getId());
+        Page<Order> orders = this.orderService.findByUser(page, size, user.getId(), status);
 
         return new ResponseVo(orders);
     }

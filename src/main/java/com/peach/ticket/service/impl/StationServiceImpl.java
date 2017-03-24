@@ -31,21 +31,21 @@ public class StationServiceImpl implements StationService {
         return this.stationRepository.findById(id);
     }
 
-    public Page<Station> findAll() {
+    public Page<Station> findAll(int page, int size, String code, String name) {
         Pageable pageable = new Pageable() {
             @Override
             public int getPageNumber() {
-                return 0;
+                return page;
             }
 
             @Override
             public int getPageSize() {
-                return 0;
+                return size;
             }
 
             @Override
             public int getOffset() {
-                return 0;
+                return (page - 1) * size;
             }
 
             @Override
@@ -74,7 +74,15 @@ public class StationServiceImpl implements StationService {
             }
         };
 
-        return this.stationRepository.findAll(pageable);
+        if(!code.isEmpty() && !name.isEmpty()){
+            return this.stationRepository.findByCodeContainingAndNameContaining(code, name, pageable);
+        } else if(!code.isEmpty()){
+            return this.stationRepository.findByCodeContaining(code, pageable);
+        } else if(!name.isEmpty()){
+            return this.stationRepository.findByNameContaining(name, pageable);
+        }else{
+            return this.stationRepository.findAll(pageable);
+        }
     }
 
     public List<Station> findByCode(String code){

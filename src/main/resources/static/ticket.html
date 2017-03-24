@@ -41,8 +41,15 @@
     <h3 class="peach-title">订单管理</h3>
     <form class="form-inline peach-search clearfix" role="form">
         <div class="form-group">
-            <label class="sr-only" for="name">订单ID</label>
-            <input class="form-control" name="name" id="name" placeholder="请输入订单ID">
+            <label class="sr-only" for="status1">订单状态</label>
+            <select class="form-control" name="status" id="status1" placeholder="请选择订单状态">
+                <option value="">全部</option>
+                <option value="0">未支付</option>
+                <option value="1">已支付</option>
+                <option value="2">已使用</option>
+                <option value="3">已取消</option>
+                <option value="4">已作废</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary pull-right">搜索</button>
     </form>
@@ -54,16 +61,16 @@
                 <th>用户</th>
                 <th>起始站台</th>
                 <th>结束站台</th>
-                <th>总金额</th>
                 <th>方案</th>
+                <th>总金额</th>
                 <th>支付状态</th>
-                <th>状态</th>
+                <th>订单状态</th>
                 <th>创建时间</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody id="peach-list">
-            <tr><td colspan="9">请选择站台</td></tr>
+            <tr><td colspan="10">请选择站台</td></tr>
             </tbody>
         </table>
     </div>
@@ -95,10 +102,10 @@
     <tr>
         <td><!--[= list[i].id]--></td>
         <td><!--[= list[i].userId]--></td>
-        <td><!--[= list[i].startStationId]--></td>
-        <td><!--[= list[i].endStationId]--></td>
-        <td><!--[= list[i].totalAmount]--></td>
+        <td><!--[= list[i].startStationName]--></td>
+        <td><!--[= list[i].endStationName]--></td>
         <td><!--[= list[i].fanganCN]--></td>
+        <td><!--[= list[i].totalAmount]--></td>
         <td><!--[= list[i].payStatus ? '已支付' : '未支付']--></td>
         <td><!--[= $getOrderStatus(list[i].status)]--></td>
         <td><!--[= $formatDate(list[i].createAt, 'yyyy-MM-dd hh:mm:ss')]--></td>
@@ -114,7 +121,7 @@
     </tr>
     <!--[}]-->
     <!--[if(list.length == 0){]-->
-    <tr><td colspan="9">没有数据。</td></tr>
+    <tr><td colspan="10">没有数据。</td></tr>
     <!--[}]-->
 </script>
 <script type="text/html" id="peach-page-tpl">

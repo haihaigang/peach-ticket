@@ -7,6 +7,13 @@
         tempData = null,
         curPopDom = null; //当前点击的popover弹窗dom
 
+    //提交form表单
+    $('.peach-search').submit(function (e) {
+        e.preventDefault();
+
+        getList(1);
+    });
+
     //点击新增打开编辑框
     $('#btn-add').click(function (e) {
         e.preventDefault();
@@ -79,13 +86,30 @@
             data: obj,
             showLoader: true
         }, function (response) {
-            tempData = response.body;
+            tempData = processData(response.body);
             Ajax.render("#peach-page", "peach-page-tpl", tempData);
             Ajax.render("#peach-list", "peach-list-tpl", tempData.content);
 
 
         }, function (data) {
         })
+    }
+
+    /**
+     * 处理数据
+     * */
+    function processData(data){
+        for(var i in data.content){
+            var fanganArr = data.content[i].fanganCN.split('-');
+
+            if(fanganArr.length == 0){
+                continue;
+            }
+            data.content[i].startStationName = fanganArr[0];
+            data.content[i].endStationName = fanganArr[fanganArr.length - 1];
+        }
+
+        return data;
     }
 
     // 设置到分页事件上

@@ -23,7 +23,7 @@ public interface OrderService {
     /**
      * 获取所有订单
      */
-    Page<Order> findAll();
+    Page<Order> findAll(int page, int size, long userId, int status);
 
     /**
      * 获取某个订单
@@ -67,5 +67,5 @@ public interface OrderService {
      */
     boolean invalid(long id);
 
-    Page<Order> findByUser(long id);
+    Page<Order> findByUser(int page, int size, long id, int status);
 }

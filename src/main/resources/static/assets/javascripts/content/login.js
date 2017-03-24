@@ -45,7 +45,11 @@
             Cookie.setCookie('UserName', response.body.nickname);
             Cookie.setCookie('RoleId', response.body.role.id);
 
-            location.href = 'dashboard.html';
+            if(_GET().from){
+                location.href = _GET().from;
+            }else{
+                location.href = 'dashboard.html';
+            }
         }, function () {
             resetLoginStatus();
         });
@@ -61,6 +65,21 @@
         inte = setTimeout(function(){
             $('#btnSubmit').removeClass('disabled').text('登 录');
         },200)
+    }
+
+    function _GET() {
+        var e = location.search,
+            o = {};
+        if ("" === e || void 0 === e) return o;
+        e = e.substr(1).split("&");
+        for (var n in e) {
+            var t = e[n].split("=");
+            o[t[0]] = decodeURI(t[1])
+        }
+        if (o.from) {
+            delete o.code
+        } //o.from得到的是什么值(类型)
+        return o
     }
 
 })()

@@ -20,8 +20,13 @@ public interface StationRepository extends Repository<Station, Long> {
 
     Page<Station> findAll(Pageable pageable);
 
-
     List<Station> findByCode(String code);
 
     List<Station> findByCodeContaining(String code);
+
+    Page<Station> findByCodeContaining(String code, Pageable pageable);
+
+    Page<Station> findByNameContaining(String name, Pageable pageable);
+
+    Page<Station> findByCodeContainingAndNameContaining(String code, String name, Pageable pageable);
 }

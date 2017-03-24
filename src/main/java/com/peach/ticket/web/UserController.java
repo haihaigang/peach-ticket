@@ -86,8 +86,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public ResponseVo findAll() {
-        Page<User> users = this.userService.findAll();
+    public ResponseVo findAll(
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false) int size,
+            @RequestParam(required = false) String nickname
+    ) {
+        Page<User> users = this.userService.findAll(page, size, nickname);
 
         List<UserDTO> dtos = new ArrayList<UserDTO>();
         for (User user : users.getContent()

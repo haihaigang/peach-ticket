@@ -32,21 +32,21 @@ public class LineServiceImpl implements LineService {
         return lineRepository.findById(id);
     }
 
-    public Page<Line> findAll() {
+    public Page<Line> findAll(int page, int size, String code, String name) {
         Pageable pageable = new Pageable() {
             @Override
             public int getPageNumber() {
-                return 0;
+                return page;
             }
 
             @Override
             public int getPageSize() {
-                return 0;
+                return size;
             }
 
             @Override
             public int getOffset() {
-                return 0;
+                return (page - 1) * size;
             }
 
             @Override
@@ -75,7 +75,15 @@ public class LineServiceImpl implements LineService {
             }
         };
 
-        return this.lineRepository.findAll(pageable);
+        if(!code.isEmpty() && !name.isEmpty()){
+            return this.lineRepository.findByCodeContainingAndNameContaining(code, name, pageable);
+        } else if(!code.isEmpty()){
+            return this.lineRepository.findByCodeContaining(code, pageable);
+        } else if(!name.isEmpty()){
+            return this.lineRepository.findByNameContaining(name, pageable);
+        }else{
+            return this.lineRepository.findAll(pageable);
+        }
     }
 
     public HashMap<String, String> findByStations(Long startStationId, Long endStationId) {
@@ -83,15 +91,14 @@ public class LineServiceImpl implements LineService {
             return null;
         }
 
-        Page<Line> allLines = this.findAll();
+        List<Line> allLines = this.lineRepository.findAll();
 
         //找出所有的树的关系
         //分别找出所有以起始点开始的段，然后依次找下去直到找到目标点
 
         HashMap<Long, Station> trees = new HashMap<>();
 
-        for (Line line : allLines.getContent()
-                ) {
+        for (Line line : allLines) {
             List<Station> stations = line.getStations();
 
             int size = stations.size();
@@ -201,6 +208,10 @@ public class LineServiceImpl implements LineService {
         }
 
         return results;
+    }
+
+    public int countByStationId(int stationId){
+        return 0;
     }
 
 }

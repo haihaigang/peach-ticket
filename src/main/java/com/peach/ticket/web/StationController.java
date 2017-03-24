@@ -1,6 +1,7 @@
 package com.peach.ticket.web;
 
 import com.peach.ticket.domain.Station;
+import com.peach.ticket.service.LineService;
 import com.peach.ticket.service.StationService;
 import com.peach.ticket.web.dto.StationDTO;
 import com.peach.ticket.web.response.ResponseCode;
@@ -20,6 +21,9 @@ import java.util.List;
 public class StationController {
     @Autowired
     private StationService stationService;
+
+    @Autowired
+    private LineService lineService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseVo save(
@@ -53,6 +57,7 @@ public class StationController {
 
     @RequestMapping(value = "/{id}/remove", method = RequestMethod.POST)
     public ResponseVo remove(@PathVariable Long id) {
+        int count = this.lineService.countByStationId(1);
         this.stationService.remove(id);
 
         return new ResponseVo(ResponseCode.OK, "删除成功");
@@ -69,8 +74,13 @@ public class StationController {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public ResponseVo findAll() {
-        Page<Station> stations = this.stationService.findAll();
+    public ResponseVo findAll(
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false) int size,
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) String name
+    ) {
+        Page<Station> stations = this.stationService.findAll(page, size, code, name);
 
         List<StationDTO> dtos = new ArrayList<StationDTO>();
         for (Station station : stations.getContent()
@@ -101,4 +111,5 @@ public class StationController {
 
         return new ResponseVo(stations);
     }
+
 }

@@ -30,21 +30,21 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findById(id);
     }
 
-    public Page<User> findAll() {
+    public Page<User> findAll(int page, int size, String nickname) {
         Pageable pageable = new Pageable() {
             @Override
             public int getPageNumber() {
-                return 0;
+                return page;
             }
 
             @Override
             public int getPageSize() {
-                return 0;
+                return size;
             }
 
             @Override
             public int getOffset() {
-                return 0;
+                return (page - 1) * size;
             }
 
             @Override
@@ -73,7 +73,11 @@ public class UserServiceImpl implements UserService {
             }
         };
 
-        return this.userRepository.findAll(pageable);
+        if(!nickname.isEmpty()){
+            return this.userRepository.findByNicknameContaining(nickname, pageable);
+        }else{
+            return this.userRepository.findAll(pageable);
+        }
     }
 
     public User findByUserName(String username) {
